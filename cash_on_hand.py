@@ -91,3 +91,72 @@ def coh_function():
                 largest_decrease = (day, decrease)
         # Return the day and amount of the largest decrease
         return largest_decrease
+    def fluctuation(value):
+        """
+        Function to analyze the data when thecash is fluctuating.
+        - If the cash is fluctuating, the function will find out the days and amounts where the highest decrements occur.
+        """
+        decrease = (0,0)
+        cash_deficit = [] 
+        for item in range(1, len(value)):
+            [day , cash] = value[item]
+            [prev_day, prev_cash] = value[item-1]
+            # Find all the days where there is a decrease in net cash
+            if prev_cash > cash:
+                decrease = (day, mod(prev_cash - cash))
+                cash_deficit.append(decrease)
+        # Find the top 3 days with the largest decrease in cash
+        top_3 = []
+        # Copy the cash deficit list
+        copied_list = cash_deficit.copy()
+        for iteration in range(3):
+            greatest_decrease = (0,0)
+            for record in copied_list:
+                [day, decrease] = record
+                if decrease > greatest_decrease[1]:
+                    greatest_decrease = (day, decrease)
+            # Append the greatest decrease to the top 3 list
+            top_3.append(greatest_decrease)
+            # Remove the greatest decrease from the copied list
+            copied_list.remove(greatest_decrease)
+        # Return the top 3 list and the cash deficit list
+        return [top_3, cash_deficit]
+
+    
+    def cash_analysis():
+        """
+     This function will compute the difference in cash if the current day is
+     lower than the previous day. 
+
+     - If the cash is always increasing, the function will find out
+     the day and amount the highest increment occurs.
+     - If the cash is always decreasing, the function will find out
+     the day and amount the highest decrement occurs.
+     - If the cash is fluctuating, the function will find out
+     the days and amounts where the highest decrements occur.
+     """
+         # Initialize an empty string to store the analysis results
+        result_str = ""
+       # Identify the trend of the cash flow
+        case = case_identifier(value)
+       # Depending on the trend, perform different analyses
+        if case == "Always_increasing":
+            [day, amount] = always_increasing(value)
+            result_str += f"[CASH SURPLUS] CASH ON EACH DAY IS HIGHER THAN PREVIOUS DAY\n"
+            result_str += f"[HIGHEST CASH SURPLUS] DAY: {day}, AMOUNT: SGD{amount}\n"
+        elif case == "Always_decreasing":
+            [day, amount] = always_decreasing(value)
+            result_str += f"[CASH DEFICIT] CASH ON EACH DAY IS LOWER THAN PREVIOUS DAY\n"
+            result_str += f"[HIGHEST CASH DEFICIT] DAY: {day}, AMOUNT: SGD{amount}\n"
+        else:
+            [top_3, list_of_deficits] = fluctuation(value)
+            for day,amount in list_of_deficits:
+                result_str += f"[CASH DEFICIT] DAY:{day}, AMOUNT: SGD:{amount}\n"
+            result_str += f"[HIGHEST CASH DEFICIT] DAY: {top_3[0][0]}, AMOUNT: SGD{top_3[0][1]}\n"
+            result_str += f"[2ND HIGHEST CASH DEFICIT] DAY: {top_3[1][0]}, AMOUNT: SGD{top_3[1][1]}\n"
+            result_str += f"[3RD HIGHEST CASH DEFICIT] DAY: {top_3[2][0]}, AMOUNT: SGD{top_3[2][1]}\n"
+        # Return the analysis results
+        return result_str
+
+    # Return the result of the cash analysis
+    return cash_analysis()
