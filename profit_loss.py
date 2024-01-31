@@ -2,7 +2,7 @@ def profit_loss_function():
     import csv
     
     
-    def read_csv_data(file_path):
+    def read_csv_data(Profit_and_Loss):
         """
         Function to read data from a CSV file.
         - Parameter needed is the CSV file path.
@@ -10,7 +10,7 @@ def profit_loss_function():
         
         data = []
         # Open the file and read the data
-        with open(file_path, newline='',encoding="UTF-8") as csvfile:
+        with open(Profit_and_Loss, newline='',encoding="UTF-8") as csvfile:
             reader = csv.reader(csvfile)
             next(reader) # Skip the header row
             for row in reader:
