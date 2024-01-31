@@ -22,16 +22,6 @@ def coh_function():
     # Read the data from the CSV file
     value = read_csv_data("csv_reports/Cash_on_Hand.csv") 
 
-    
-    def mod(x):
-        """
-        Function to calculate the absolute value of a number.
-        - Parameter needed is the number to calculate the absolute value of.
-        """
-        if x < 0:
-            return -x
-        else:
-            return x
 
     def case_identifier(value):
         """
@@ -66,9 +56,11 @@ def coh_function():
         
         largest_increase = (0,0)
         for item in range(1, len(value)):
+            # Unpack the day and cash value for the current item
             [day , cash] = value[item]
+            # Unpack the day and cash value for the previous item
             [prev_day, prev_cash] = value[item-1]
-            increase =  cash - prev_cash
+            increase =  cash - prev_cash # Calculate the increase in cash from the previous day to the current day
            # Find the day with the largest increase in cash
             if increase > largest_increase[1]:
                 largest_increase = (day, increase)
@@ -83,9 +75,11 @@ def coh_function():
 
         largest_decrease = (0,0)
         for item in range(1, len(value)):
+            # Unpack the day and cash value for the current item
             [day , cash] = value[item]
+            # Unpack the day and cash value for the previous item
             [prev_day, prev_cash] = value[item-1]
-            decrease = mod(prev_cash-cash)
+            decrease = (prev_cash-cash) # Calculate the decrease in cash from the previous day to the current day
             # Find the day with the largest decrease in cash
             if decrease > largest_decrease[1]:
                 largest_decrease = (day, decrease)
@@ -97,27 +91,33 @@ def coh_function():
         - If the cash is fluctuating, the function will find out the days and amounts where the highest decrements occur.
         """
         decrease = (0,0)
-        cash_deficit = [] 
+        cash_deficit = []  # Initialize an empty list to store the days with cash deficit
         for item in range(1, len(value)):
+            # Unpack the day and cash value for the current item
             [day , cash] = value[item]
+            # Unpack the day and cash value for the previous item
             [prev_day, prev_cash] = value[item-1]
             # Find all the days where there is a decrease in net cash
             if prev_cash > cash:
-                decrease = (day, mod(prev_cash - cash))
-                cash_deficit.append(decrease)
+                decrease = (day, (prev_cash - cash)) # Calculate the decrease in cash and store it with the day
+                cash_deficit.append(decrease)   # Add the day and decrease to the cash deficit list
         # Find the top 3 days with the largest decrease in cash
         top_3 = []
         # Copy the cash deficit list
         copied_list = cash_deficit.copy()
         for iteration in range(3):
             greatest_decrease = (0,0)
-            for record in copied_list:
-                [day, decrease] = record
-                if decrease > greatest_decrease[1]:
+            
+            # Loop through the copied list
+            for record in copied_list:  
+                [day, decrease] = record # Unpack the day and decrease for the current record
+                
+                # If the decrease for the current record is greater than the previously recorded greatest decrease
+                if decrease > greatest_decrease[1]: 
                     greatest_decrease = (day, decrease)
-            # Append the greatest decrease to the top 3 list
+            # Add the greatest decrease to the top 3 list
             top_3.append(greatest_decrease)
-            # Remove the greatest decrease from the copied list
+            # Remove the greatest decrease from the copied list to avoid duplication
             copied_list.remove(greatest_decrease)
         # Return the top 3 list and the cash deficit list
         return [top_3, cash_deficit]
