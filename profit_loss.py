@@ -33,7 +33,7 @@ def profit_loss_function():
         else:
             return x
 
-    def case_identifier(value):
+    def case_identifier(NetProfit):
         """
      Function to identify the trend in the net net profit data.
      - Parameter needed is the net net profit data.
@@ -41,9 +41,9 @@ def profit_loss_function():
         Always_increasing = True
         Always_decreasing = True
         # Iterate through the data
-        for numbers in range(1, len(value)-1):
-            [day, profit] = value[numbers]
-            [day_tomorrow, profit_tomorrow] = value[numbers+1]
+        for numbers in range(1, len(NetProfit)-1):
+            [day, profit] = NetProfit[numbers]
+            [day_tomorrow, profit_tomorrow] = NetProfit[numbers+1]
            # Check if the net profit flow is fluctuating
             if Always_decreasing == False and Always_increasing == False:
                 return "Fluctuating"
@@ -57,7 +57,7 @@ def profit_loss_function():
             return "Always_increasing"
         
     
-    def always_increasing(value):
+    def always_increasing(NetProfit):
         """
         Function to analyze the data when the net net profit is always increasing.
         - If the net profit is always increasing, the function will find out
@@ -65,9 +65,9 @@ def profit_loss_function():
         """
         
         largest_increase = (0,0)
-        for item in range(1, len(value)):
-            [day , profit] = value[item]
-            [prev_day, prev_profit] = value[item-1]
+        for item in range(1, len(NetProfit)):
+            [day , profit] = NetProfit[item]
+            [prev_day, prev_profit] = NetProfit[item-1]
             increase =  profit - prev_profit
            # Find the day with the largest increase in net profit
             if increase > largest_increase[1]:
@@ -75,16 +75,16 @@ def profit_loss_function():
         # Return the day and amount of the largest increase
         return largest_increase
 
-    def always_decreasing(value):
+    def always_decreasing(NetProfit):
         """
         Function to analyze the data when the net net profit is always decreasing.
         - If the net profit is always decreasing, the function will find out the day and amount the highest decrement occurs.
         """
 
         largest_decrease = (0,0)
-        for item in range(1, len(value)):
-            [day , profit] = value[item]
-            [prev_day, prev_profit] = value[item-1]
+        for item in range(1, len(NetProfit)):
+            [day , profit] = NetProfit[item]
+            [prev_day, prev_profit] = NetProfit[item-1]
             decrease = mod(prev_profit - profit)
             # Find the day with the largest decrease in net profit
             if decrease > largest_decrease[1]:
