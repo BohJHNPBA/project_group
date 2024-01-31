@@ -22,17 +22,6 @@ def profit_loss_function():
     # Read the data from the CSV file
     value = read_csv_data("csv_reports/Profit_and_Loss.csv") 
 
-    
-    def mod(x):
-        """
-        Function to calculate the absolute value of a number.
-        - Parameter needed is the number to calculate the absolute value of.
-        """
-        if x < 0:
-            return -x
-        else:
-            return x
-
     def case_identifier(value):
         """
      Function to identify the trend in the net net profit data.
@@ -66,12 +55,14 @@ def profit_loss_function():
         
         largest_increase = (0,0)
         for item in range(1, len(value)):
+            # Unpack the day and cash value for the current item
             [day , profit] = value[item]
+            # Unpack the day and cash value for the previous item
             [prev_day, prev_profit] = value[item-1]
-            increase =  profit - prev_profit
+            increase =  profit - prev_profit # Calculate the increase in cash from the previous day to the current day
            # Find the day with the largest increase in net profit
             if increase > largest_increase[1]:
-                largest_increase = (day, increase)
+                largest_increase = (day, increase) # Update the largest_increase with the current day and increase
         # Return the day and amount of the largest increase
         return largest_increase
 
@@ -83,12 +74,14 @@ def profit_loss_function():
 
         largest_decrease = (0,0)
         for item in range(1, len(value)):
+            # Unpack the day and cash value for the current item
             [day , profit] = value[item]
+             # Unpack the day and cash value for the previous item
             [prev_day, prev_profit] = value[item-1]
-            decrease = mod(prev_profit - profit)
+            decrease = (prev_profit - profit)
             # Find the day with the largest decrease in net profit
             if decrease > largest_decrease[1]:
-                largest_decrease = (day, decrease)
+                largest_decrease = (day, decrease) # Update the largest_decrease with the current day and decrease
         # Return the day and amount of the largest decrease
         return largest_decrease
     
@@ -99,27 +92,31 @@ def profit_loss_function():
         """
 
         decrease = (0,0)
-        profit_deficit = [] 
+        profit_deficit = [] # Initialize an empty list to store the days with profit deficit 
         for item in range(1, len(value)):
+            # Unpack the day and cash value for the previous item
             [day , profit] = value[item]
+            # Unpack the day and cash value for the previous item
             [prev_day, prev_profit] = value[item-1]
             # Find all the days where there is a decrease in net profit
             if prev_profit > profit:
-                decrease = (day, mod(prev_profit - profit))
-                profit_deficit.append(decrease)
-                # Find the top 3 days with the largest decrease in net profit
+                decrease = (day, (prev_profit - profit)) # Calculate the decrease in profit and store it with the day
+                profit_deficit.append(decrease) # Add the day and decrease to the cash deficit list
+         # Find the top 3 days with the largest decrease in net profit
         top_3 = []
-        # Copy the net profit deficit list
-        copied_list = profit_deficit.copy()
+        # Copy the net profit deficit list to avoid modifying the original list
+        copied_list = profit_deficit.copy() 
+        # Find the top 3 days with the largest decrease
         for iteration in range(3):
-            greatest_decrease = (0,0)
+            greatest_decrease = (0,0) 
             for record in copied_list:
-                [day, decrease] = record
+                [day, decrease] = record   # Unpack the day and decrease for the current record
+                # If the decrease for the current record is greater than the previously recorded greatest decrease
                 if decrease > greatest_decrease[1]:
-                    greatest_decrease = (day, decrease)
+                    greatest_decrease = (day, decrease) # Update the greatest decrease with the current day and decrease
             # Append the greatest decrease to the top 3 list
             top_3.append(greatest_decrease)
-            # Remove the greatest decrease from the copied list
+            # Remove the greatest decrease from the copied list to avoid duplication
             copied_list.remove(greatest_decrease)
         # Return the top 3 list and the net profit deficit list
         return [top_3, profit_deficit]
