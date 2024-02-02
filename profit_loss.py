@@ -20,7 +20,7 @@ def profit_loss_function():
         return data # Return the list of data
 
     # Read the data from the CSV file
-    value = read_csv_data("csv_reports/Profit_and_Loss.csv") 
+    value = read_csv_data("csv_reports/Profits_and_Loss.csv") 
 
     def case_identifier(value):
         """
